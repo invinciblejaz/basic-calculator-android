@@ -11,6 +11,12 @@ It supports:
 - Custom adaptive app icon
 - Signed release builds (APK & AAB)
 
+## 📸 Screenshots
+
+![Splash Screen](Screenshot_20251120_002303_BasicCalculator.jpg)
+![Calculator Screen](Screenshot_20251120_002309_BasicCalculator.jpg)
+
+
 ## 🔧 Tech Stack
 - Java
 - Android SDK
