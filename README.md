@@ -19,7 +19,7 @@ It supports:
 - Git & GitHub
 
 ## 📱 Download APK
-👉 APK download link will go here after we create a Release.
+👉 https://github.com/invinciblejaz/basic-calculator-android/releases/download/v1.0.0/app-release.apk
 
 ## 🚀 Future Improvements
 - Percentage support
