@@ -1,0 +1,28 @@
+# Gradle
+.gradle/
+build/
+
+# Generated folders
+/captures/
+/outputs/
+
+# Local configuration file
+/local.properties
+
+# Android Studio
+.idea/
+*.iml
+
+# Logs
+*.log
+
+# APK / AAB
+*.apk
+*.aab
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Lottie cache (if added later)
+lottie-compose-*
