@@ -1,61 +1,71 @@
-# 📱 Basic Calculator – Android App
+📱 Basic Calculator – Android App (v2.0)
 
-A modern and lightweight calculator app built using **Java** and **Android Studio**.  
-It performs standard arithmetic functions with smooth UI, clean UX, and fast performance.
+A clean and modern Android calculator built using Java and XML, designed to feel fast, smooth, and intuitive.
+Version 2.0 introduces major UI/UX upgrades including haptic feedback, result animations, expression preview, and smarter decimal formatting — bringing the experience closer to a production-ready calculator.
 
----
+✨ New in v2.0
 
-## ✨ Features
-✔️ Number input with decimal support  
-✔️ Addition, subtraction, multiplication, and division  
-✔️ **Chained calculations** (e.g., `1 + 2 + 3 = 6`)  
-✔️ Clear & delete operations  
-✔️ **Lottie animated splash screen**  
-✔️ **Adaptive launcher icon (Material design)**  
-✔️ Signed **release builds (APK + AAB)**
+🔹 Haptic feedback on every button press
+🔹 Fade-in + scale animation when displaying results
+🔹 Expression preview above the input
+🔹 ± toggle button to switch number signs instantly
+🔹 Smart decimal formatting (5.0 → 5)
+🔹 Improved state handling for seamless input + results flow
+🔹 Better delete logic (after result, tap → clears everything)
+🔹 Consistent UI styling and polished layout
 
----
+📌 Core Features
 
-## 🛠 Tech Stack
-| Layer | Technology |
-|-------|------------|
-| Language | Java |
-| UI | XML Layouts |
-| Animation | Lottie |
-| Build System | Gradle |
-| Version Control | Git & GitHub |
+✔️ Accurate arithmetic operations: +, −, ×, ÷
+✔️ Number input with decimal support
+✔️ Chained calculations (e.g., 5 + 2 + 3 =)
+✔️ Clear & delete operations
+✔️ Lottie animated splash screen
+✔️ Material-style adaptive launcher icon
+✔️ Signed release builds (APK + AAB)
 
----
+🛠 Tech Stack
+Layer	Technology
+Language	Java
+UI	XML Layouts
+Animations	Android View Animations + Lottie
+IDE	Android Studio
+Build System	Gradle
+Versioning	Git & GitHub Releases
+📸 UI Preview
+Splash	Main UI	Result Animation
+add splash screenshot	add calculator screenshot	add result UI screenshot
 
-## 📸 Screenshots
-| Splash Screen | Calculator Screen |
-|--------------|------------------|
-| <img src="Screenshot_20251120_002303_BasicCalculator.jpg" width="250"> | <img src="Screenshot_20251120_002309_BasicCalculator.jpg" width="250"> |
+You can place screenshots inside /preview/ and reference them here.
 
----
+📥 Download APK
 
-## 📥 Download APK
-🔗 **[Download Latest Release](https://github.com/invinciblejaz/basic-calculator-android/releases/latest/download/app-release.apk)**
+📌 Download Latest Release:
+🔗 https://github.com/invinciblejaz/basic-calculator-android/releases
 
-> No installation issues – signed release version optimized for Android devices.
+Works on Android 7.0 (Nougat) and above.
+Release build is optimized and signed for direct installation.
 
----
+🚧 Roadmap (Upcoming)
 
-## 🚀 Future Roadmap
-- Percentage operator
-- Scientific calculator mode
-- Calculation history
-- Button press animation & haptic feedback
+Percentage operator
 
----
+Scientific calculator mode
 
-## 🧾 License
-This project is open-source under the **MIT License**.  
-Feel free to fork, improve or use it in your learning journey.
+Calculation history
 
----
+Long-press actions (copy result, paste input)
 
-### 👦 Developer
-**Jass** – Android development learner exploring UI/UX and app functionality through real-world projects.
+Community feature requests & pull requests are welcome.
 
-If you like this project, feel free to **⭐ star the repo**!
+🧾 License
+
+This project is open-source under the MIT License.
+You are free to use, modify, and distribute it.
+
+👨‍💻 Developer
+
+Jasdeep Singh — Android Developer (Java/Kotlin)
+Building real-world apps while exploring clean UI, smooth UX, and better code architecture.
+
+If you found this project useful, please ⭐ star the repo — it helps a lot!
