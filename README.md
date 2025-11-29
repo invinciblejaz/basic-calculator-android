@@ -24,6 +24,13 @@ Version 2.0 introduces major UI/UX upgrades including haptic feedback, result an
 ✔️ Material-style adaptive launcher icon
 ✔️ Signed release builds (APK + AAB)
 
+## 📸 UI Preview
+
+| Splash Screen | Main Screen |
+|--------------|-------------|
+| <img src="screenshots/splash_screen.png" width="260"> | <img src="screenshots/main_screen.png" width="260"> |
+
+
 🛠 Tech Stack
 Layer	Technology
 Language	Java
