@@ -4,29 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#1C1C1E">
+    android:background="@drawable/gradient_background">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/splash_overlay" />
 
     <com.airbnb.lottie.LottieAnimationView
         android:id="@+id/lottieView"
-        android:layout_width="260dp"
-        android:layout_height="260dp"
+        android:layout_width="320dp"
+        android:layout_height="320dp"
+        android:elevation="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.42"
         app:lottie_autoPlay="true"
         app:lottie_loop="false"
         app:lottie_rawRes="@raw/splash_animation" />
 
     <TextView
+        android:id="@+id/appTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="41dp"
+        android:layout_marginTop="24dp"
         android:text="Calculator"
-        android:textColor="#ffff"
-        android:textSize="40sp"
-        android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="@+id/lottieView"
-        app:layout_constraintStart_toStartOf="@+id/lottieView" />
+        android:textColor="#FFFFFF"
+        android:textSize="48sp"
+        android:fontFamily="sans-serif-thin"
+        android:letterSpacing="0.05"
+        android:elevation="8dp"
+        android:shadowColor="#80000000"
+        android:shadowDx="0"
+        android:shadowDy="4"
+        android:shadowRadius="8"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lottieView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Simple • Fast • Beautiful"
+        android:textColor="#99FFFFFF"
+        android:textSize="14sp"
+        android:fontFamily="sans-serif-light"
+        android:letterSpacing="0.1"
+        android:elevation="8dp"
+        app:layout_constraintEnd_toEndOf="@+id/appTitle"
+        app:layout_constraintStart_toStartOf="@+id/appTitle"
+        app:layout_constraintTop_toBottomOf="@+id/appTitle" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="64dp"
+        android:indeterminateTint="#FF9500"
+        android:elevation="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
