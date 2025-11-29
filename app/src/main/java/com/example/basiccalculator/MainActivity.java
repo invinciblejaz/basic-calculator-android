@@ -1,32 +1,43 @@
 package com.example.basiccalculator;
 
+import android.animation.ValueAnimator;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.view.View;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+import java.text.DecimalFormat;
 
-    TextView resultview,resultpreview;
-    Button clearbtn, onebtn, twobtn, threebtn, fourbtn, fivebtn, sixbtn, sevenbtn, eightbtn, ninebtn, zerobtn, dotbtn, addbtn, subbtn, mulbtn, divbtn, equalbtn, deletebtn, bracketbtn;
+public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+
+    TextView resultview, resultpreview;
+    Button clearbtn, onebtn, twobtn, threebtn, fourbtn, fivebtn, sixbtn, sevenbtn, eightbtn, ninebtn, zerobtn, dotbtn, addbtn, subbtn, mulbtn, divbtn, equalbtn, deletebtn, bracketbtn, plusminusbtn;
 
     String currentInput = "";
     double firstNumber = 0;
-    char currentOperator = '\0'; // no operator yet
-
+    char currentOperator = '\0';
+    boolean isResultDisplayed = false;
+    Vibrator vibrator;
+    DecimalFormat decimalFormat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        decimalFormat = new DecimalFormat("#.##########");
+
+        initializeViews();
+        setClickListeners();
+    }
+
+    private void initializeViews() {
         clearbtn = findViewById(R.id.clearbtn);
         onebtn = findViewById(R.id.onebtn);
         twobtn = findViewById(R.id.twobtn);
@@ -46,14 +57,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         equalbtn = findViewById(R.id.equalbtn);
         bracketbtn = findViewById(R.id.bracketbtn);
         deletebtn = findViewById(R.id.deletebtn);
-
+        plusminusbtn = findViewById(R.id.plusminusbtn);
 
         resultview = findViewById(R.id.resultview);
         resultpreview = findViewById(R.id.resultpreview);
+    }
 
-
-        //setting listeners
-        // Set listeners
+    private void setClickListeners() {
         clearbtn.setOnClickListener(this);
         onebtn.setOnClickListener(this);
         twobtn.setOnClickListener(this);
@@ -66,7 +76,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ninebtn.setOnClickListener(this);
         zerobtn.setOnClickListener(this);
         dotbtn.setOnClickListener(this);
-
         addbtn.setOnClickListener(this);
         subbtn.setOnClickListener(this);
         mulbtn.setOnClickListener(this);
@@ -74,11 +83,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         equalbtn.setOnClickListener(this);
         bracketbtn.setOnClickListener(this);
         deletebtn.setOnClickListener(this);
-
-
+        plusminusbtn.setOnClickListener(this);
     }
+
     @Override
     public void onClick(View v) {
+        hapticFeedback();
         int id = v.getId();
 
         if (id == R.id.clearbtn) {
@@ -110,48 +120,59 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         } else if (id == R.id.minusbtn) {
             setOperator('-');
         } else if (id == R.id.multiplybtn) {
-            setOperator('*');
+            setOperator('×');
         } else if (id == R.id.dividebtn) {
-            setOperator('/');
+            setOperator('÷');
         } else if (id == R.id.equalbtn) {
             calculateResult();
         } else if (id == R.id.bracketbtn) {
             appendBracket();
         } else if (id == R.id.deletebtn) {
             appendDelete();
+        } else if (id == R.id.plusminusbtn) {
+            toggleSign();
         }
     }
 
+    private void hapticFeedback() {
+        if (vibrator != null && vibrator.hasVibrator()) {
+            vibrator.vibrate(10);
+        }
+    }
 
-        public void appendNumber(String num){
+    public void appendNumber(String num) {
+        if (isResultDisplayed) {
+            currentInput = "";
+            isResultDisplayed = false;
+        }
 
-        currentInput = currentInput+num;
-        resultpreview.setText(currentInput);
-
-
+        if (currentInput.length() < 15) {
+            currentInput = currentInput + num;
+            updateDisplay();
+        }
     }
 
     public void appendDot() {
+        if (isResultDisplayed) {
+            currentInput = "0";
+            isResultDisplayed = false;
+        }
+
         if (!currentInput.contains(".")) {
-            if(currentInput.isEmpty()){
+            if (currentInput.isEmpty()) {
                 currentInput = "0.";
-            }
-            else{
+            } else {
                 currentInput = currentInput + ".";
             }
-            resultpreview.setText(currentInput);
-
-
+            updateDisplay();
         }
     }
 
     public void setOperator(char op) {
-        // If user hasn't typed a new number yet but already chose an operator,
-        // just change the operator (e.g. + -> -)
         if (currentInput.isEmpty()) {
             if (currentOperator != '\0') {
                 currentOperator = op;
-                resultview.setText(String.valueOf(currentOperator));
+                resultpreview.setText(formatNumber(firstNumber) + " " + currentOperator);
             }
             return;
         }
@@ -160,28 +181,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             number = Double.parseDouble(currentInput);
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Invalid Number", Toast.LENGTH_SHORT).show();
+            showError("Invalid Number");
             return;
         }
 
         if (currentOperator == '\0') {
-            // First operator: store the number
             firstNumber = number;
         } else {
-
             if (!applyCurrentOperation(number)) {
-                return; // division by zero handled inside
+                return;
             }
         }
 
         currentOperator = op;
         currentInput = "";
+        isResultDisplayed = false;
 
-        // Show current result and the operator
-        resultpreview.setText(String.valueOf(firstNumber));
-        resultview.setText(String.valueOf(currentOperator));
+        resultpreview.setText(formatNumber(firstNumber) + " " + currentOperator);
+        resultview.setText("");
     }
-
 
     public void calculateResult() {
         if (currentInput.isEmpty() || currentOperator == '\0') {
@@ -192,38 +210,60 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         try {
             secondNumber = Double.parseDouble(currentInput);
         } catch (NumberFormatException e) {
-            Toast.makeText(this, "Invalid Number", Toast.LENGTH_SHORT).show();
+            showError("Invalid Number");
             return;
         }
 
+        String expression = formatNumber(firstNumber) + " " + currentOperator + " " + formatNumber(secondNumber);
+        resultpreview.setText(expression);
+
         if (!applyCurrentOperation(secondNumber)) {
-            return; // division by zero handled inside
+            return;
         }
 
+        animateResult(firstNumber);
         currentInput = String.valueOf(firstNumber);
-        resultview.setText(currentInput);
-        resultpreview.setText("");
         currentOperator = '\0';
+        isResultDisplayed = true;
     }
-     public void clearAll(){
+
+    public void clearAll() {
         currentInput = "";
         firstNumber = 0;
         currentOperator = '\0';
+        isResultDisplayed = false;
         resultview.setText("");
         resultpreview.setText("");
-     }
-
-    public void appendBracket() {
-        Toast.makeText(this, "Brackets not supported yet", Toast.LENGTH_SHORT).show();
     }
 
+    public void appendBracket() {
+        showError("Brackets not supported yet");
+    }
 
-    public void appendDelete(){
-        if(currentInput.length()>0){
-            currentInput = currentInput.substring(0,currentInput.length()-1);
-            resultpreview.setText(currentInput);
+    public void appendDelete() {
+        if (isResultDisplayed) {
+            clearAll();
+            return;
         }
-     }
+
+        if (currentInput.length() > 0) {
+            currentInput = currentInput.substring(0, currentInput.length() - 1);
+            updateDisplay();
+        }
+    }
+
+    public void toggleSign() {
+        if (currentInput.isEmpty() || currentInput.equals("0")) {
+            return;
+        }
+
+        if (currentInput.startsWith("-")) {
+            currentInput = currentInput.substring(1);
+        } else {
+            currentInput = "-" + currentInput;
+        }
+        updateDisplay();
+    }
 
     private boolean applyCurrentOperation(double secondNumber) {
         switch (currentOperator) {
@@ -233,24 +273,52 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case '-':
                 firstNumber = firstNumber - secondNumber;
                 break;
+            case '×':
             case '*':
                 firstNumber = firstNumber * secondNumber;
                 break;
+            case '÷':
             case '/':
                 if (secondNumber == 0) {
-                    Toast.makeText(this, "Cannot divide by zero", Toast.LENGTH_SHORT).show();
+                    showError("Cannot divide by zero");
                     clearAll();
                     return false;
                 }
                 firstNumber = firstNumber / secondNumber;
                 break;
             default:
-                // No operator yet, nothing to apply
                 break;
         }
         return true;
     }
 
+    private void updateDisplay() {
+        resultview.setText(currentInput);
+    }
 
+    private void animateResult(double result) {
+        ValueAnimator animator = ValueAnimator.ofFloat(0f, 1f);
+        animator.setDuration(300);
+        animator.setInterpolator(new DecelerateInterpolator());
+        animator.addUpdateListener(animation -> {
+            float value = (float) animation.getAnimatedValue();
+            resultview.setAlpha(value);
+            resultview.setScaleX(0.95f + (value * 0.05f));
+            resultview.setScaleY(0.95f + (value * 0.05f));
+        });
+        resultview.setText(formatNumber(result));
+        animator.start();
+    }
 
+    private String formatNumber(double number) {
+        if (number == (long) number) {
+            return String.format("%d", (long) number);
+        } else {
+            return decimalFormat.format(number);
+        }
+    }
+
+    private void showError(String message) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    }
 }
